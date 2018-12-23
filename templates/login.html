@@ -4,11 +4,9 @@
 <div class="container">
   <form method="post" action="" class="form-signin">
     {% csrf_token %}
-    <h2 class="form-signin-heading">회원가입</h2>
+    <h2 class="form-signin-heading">로그인</h2>
     <input type="text" name="username"
       class="form-control" placeholder="Username" required="" autofocus="">
-    <input type="email" name="email" class="form-control"
-      placeholder="Email address" required="">
     <input type="password" name="password" class="form-control"
       placeholder="Password" required="">
     <!-- <div class="checkbox">
@@ -17,7 +15,7 @@
       </label>
     </div> -->
     <button class="btn btn-lg btn-primary btn-block" type="submit">
-      가입하기
+      Log in
     </button>
   </form>
 </div>
