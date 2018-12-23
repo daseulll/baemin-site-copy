@@ -1,4 +1,8 @@
-from django.contrib.auth import authenticate, login as auth_login
+from django.contrib.auth import (
+    authenticate,
+    login as auth_login,
+    logout as auth_logout
+    )
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
@@ -8,6 +12,7 @@ def index(request):
     return render(request, "index.html", ctx)
 
 def login(request):
+    ctx = {}
     if request.method == "GET":
         pass
 
@@ -19,9 +24,9 @@ def login(request):
             auth_login(request, user)
             return redirect("/partner/")
         else:
-            pass
+            ctx.update({"error" : "사용자가 없습니다."})
 
-    ctx = {}
+
     return render(request, "login.html", ctx)
 
 def signup(request):
@@ -36,3 +41,7 @@ def signup(request):
 
     ctx = {}
     return render(request, "signup.html", ctx)
+
+def logout(request):
+    auth_logout(request)
+    return redirect("/partner/")

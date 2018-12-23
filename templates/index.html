@@ -1,5 +1,11 @@
 {% extends "base.html" %}
 {% block title %}배달의민족{% endblock %}
 {% block body %}
-<h1>index</h1>
+<div class="container">
+  {% if user.is_authenticated %}
+  <h2>{{ user.username }}님, 안녕하세요!</h2>
+  {% else %}
+  <h3>로그인 해주세요.</h3>
+  {% endif %}
+</div>
 {% endblock %}
