@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block body %}
+{% include "navbar.html" %}
+<br>
+<br>
+<br>
+<div class="container">
+  <div class="col-sm-6 col-sm-offset-3">
+      menu list
+    {{ form }}
+    <a href="/partner/menu/add/">
+      <button class="btn btn-default btn-block" name="button">메뉴 추가하기</button>
+    </a>
+  </div>
+
+</div>
+{% endblock %}

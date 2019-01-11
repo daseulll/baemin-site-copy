@@ -5,7 +5,7 @@ from django.contrib.auth import (
     )
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
-from .forms import PartnerForm
+from .forms import PartnerForm, MenuForm
 
 # Create your views here.
 def index(request):
@@ -84,3 +84,26 @@ def edit_info(request):
     return render(request, "edit_info.html", ctx)
 
     return redirect("/partner/")
+
+def menu(request):
+    ctx = {}
+
+    return render(request, "menu_list.html", ctx)
+
+def menu_add(request):
+    ctx = {}
+
+    if request.method == "GET":
+        form = MenuForm()
+        ctx.update({ "form": form })
+    elif request.method == "POST":
+        form = MenuForm(request.POST, request.FILES)
+        ctx.update({ "form": form })
+        if form.is_valid():
+            menu = form.save(commit=False)
+            menu.partner = request.user.partner
+            menu.save()
+            return redirect("/partner/menu/")
+        else:
+            ctx.update({ "form":form })
+    return render(request, "menu_add.html", ctx)

@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% block body %}
+{% include "navbar.html" %}
+<br>
+<br>
+<br>
+<div class="container">
+  <div class="col-sm-6 col-sm-offset-3">
+    menu add
+    <form enctype="multipart/form-data" method="post" action="">
+      {% csrf_token %}
+      <div>
+        {{ form }}
+      </div>
+      <button class="btn btn-default btn-block" name="button">메뉴 추가하기</button>
+    </form>
+  </div>
+
+</div>
+{% endblock %}
