@@ -6,6 +6,7 @@ from django.contrib.auth import (
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 from .forms import PartnerForm, MenuForm
+from .models import Menu
 
 # Create your views here.
 def index(request):
@@ -88,6 +89,8 @@ def edit_info(request):
 def menu(request):
     ctx = {}
 
+    menu_list = Menu.objects.filter(partner = request.user.partner)
+    ctx.update({ "menu_list": menu_list })
     return render(request, "menu_list.html", ctx)
 
 def menu_add(request):

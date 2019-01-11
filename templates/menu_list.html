@@ -4,10 +4,24 @@
 <br>
 <br>
 <br>
+<<h2>메뉴입니다.</h2>
 <div class="container">
   <div class="col-sm-6 col-sm-offset-3">
       menu list
-    {{ form }}
+      <table class="table">
+        <tr>
+          <th>이미지</th>
+          <th>메뉴이름</th>
+          <th>가격</th>
+        </tr>
+        {% for menu in menu_list %}
+        <tr>
+          <td><img style="max-width : 120px;" src="{{ menu.image.url }}"></td>
+          <td>{{ menu.name }}</td>
+          <td>{{ menu.price }}</td>
+        </tr>
+        {% endfor %}
+    </table>
     <a href="/partner/menu/add/">
       <button class="btn btn-default btn-block" name="button">메뉴 추가하기</button>
     </a>
