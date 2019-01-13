@@ -26,12 +26,12 @@ class Menu(models.Model):
         on_delete=models.CASCADE,
     )
     image = models.ImageField(
-        verbose_name="메뉴 이미지"
+        verbose_name="메뉴 이미지",
     )
     name = models.CharField(
         max_length=50,
-        verbose_name="메뉴이름"
+        verbose_name="메뉴이름",
     )
     price = models.PositiveIntegerField(
-        verbose_name="메뉴가격"
+        verbose_name="메뉴가격",
     )

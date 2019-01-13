@@ -59,6 +59,7 @@ def signup(request):
 
 def logout(request):
     auth_logout(request)
+    return redirect("/partner/")
 
 def edit_info(request):
     ctx = {}
@@ -110,3 +111,34 @@ def menu_add(request):
         else:
             ctx.update({ "form":form })
     return render(request, "menu_add.html", ctx)
+
+def menu_detail(request, menu_id):
+    ctx = {}
+    menu = Menu.objects.get(id=menu_id)
+    ctx.update({ "menu" : menu })
+
+    return render(request, "menu_detail.html", ctx)
+
+def menu_edit(request, menu_id):
+    ctx = { "replacement" : "수정" }
+    menu = Menu.objects.get(id=menu_id)
+
+    if request.method == "GET":
+        form = MenuForm(instance=menu)
+        ctx.update({ "form": form })
+    elif request.method == "POST":
+        form = MenuForm(request.POST, request.FILES, instance=menu)
+        ctx.update({ "form": form })
+        if form.is_valid():
+            menu = form.save(commit=False)
+            menu.partner = request.user.partner
+            menu.save()
+            return redirect("/partner/menu/")
+        else:
+            ctx.update({ "form":form })
+    return render(request, "menu_add.html", ctx)
+
+def menu_delete(request, menu_id):
+    menu = Menu.objects.get(id=menu_id)
+    menu.delete()
+    return redirect("/partner/menu/")

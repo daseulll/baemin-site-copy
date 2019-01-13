@@ -6,13 +6,16 @@
 <br>
 <div class="container">
   <div class="col-sm-6 col-sm-offset-3">
-    menu add
+
+    <h2>메뉴 {% if replacement %}{{ replacement }}{% else %}추가{% endif %}하기</h2>
     <form enctype="multipart/form-data" method="post" action="">
       {% csrf_token %}
       <div>
         {{ form }}
       </div>
-      <button class="btn btn-default btn-block" name="button">메뉴 추가하기</button>
+      <button class="btn btn-default btn-block">
+        메뉴 {% if replacement %}{{ replacement }}{% else %}추가{% endif %}하기
+      </button>
     </form>
   </div>
 
