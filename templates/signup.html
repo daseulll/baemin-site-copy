@@ -1,6 +1,8 @@
 {% extends "base.html" %}
 {% block title %}회원가입{% endblock %}
 {% block body %}
+{% include "navbar.html" %}
+<br><br>
 <div class="container">
   <form method="post" action="" class="form-signin">
     {% csrf_token %}
@@ -19,6 +21,11 @@
     <button class="btn btn-lg btn-primary btn-block" type="submit">
       가입하기
     </button>
+    {% if is_client %}
+    <div class="text-center">
+      <a href="/partner/signup/">업체용 회원가입 하기</a>
+    </div>
+    {% endif %}
   </form>
 </div>
 {% endblock %}

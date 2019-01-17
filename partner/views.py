@@ -3,10 +3,17 @@ from django.contrib.auth import (
     login as auth_login,
     logout as auth_logout
     )
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
+
+from client.views import common_login, common_signup
 from .forms import PartnerForm, MenuForm
 from .models import Menu
+
+URL_LOGIN = '/partner/login/'
+def partner_group_check(user):
+    return "partner" not in user.groups.all()
 
 # Create your views here.
 def index(request):
@@ -27,40 +34,18 @@ def index(request):
     return render(request, "index.html", ctx)
 
 def login(request):
-    ctx = {}
-    if request.method == "GET":
-        pass
-
-    elif request.method == "POST":
-        username = request.POST.get("username")
-        password = request.POST.get("password")
-        user = authenticate(username=username, password=password)
-        if user is not None:
-            auth_login(request, user)
-            return redirect("/partner/")
-        else:
-            ctx.update({"error" : "사용자가 없습니다."})
-
-
-    return render(request, "login.html", ctx)
+    ctx = {"is_partner":True}
+    return common_login(request, ctx, "partner")
 
 def signup(request):
-    if request.method == "GET":
-        pass
-
-    elif request.method == "POST":
-        username = request.POST.get("username")
-        email = request.POST.get("email")
-        password = request.POST.get("password")
-        user = User.objects.create_user(username, email, password)
-
-    ctx = {}
-    return render(request, "signup.html", ctx)
+    ctx = {"is_partner":True}
+    return common_signup(request, ctx, "partner")
 
 def logout(request):
     auth_logout(request)
     return redirect("/partner/")
 
+@login_required(login_url=URL_LOGIN)
 def edit_info(request):
     ctx = {}
     # partner = Partner.objects.get(user=request.user)
@@ -87,15 +72,23 @@ def edit_info(request):
 
     return redirect("/partner/")
 
+@login_required(login_url=URL_LOGIN)
 def menu(request):
     ctx = {}
+    # 조건문보다는 login decorator로 구현하면 훨씬 간단하게 구현할 수 있다.
+    if request.user.is_anonymous or request.user.partner is None:
+        return redirect("/partner/")
 
     menu_list = Menu.objects.filter(partner = request.user.partner)
     ctx.update({ "menu_list": menu_list })
     return render(request, "menu_list.html", ctx)
 
+@login_required(login_url=URL_LOGIN)
+@user_passes_test(partner_group_check, login_url=URL_LOGIN)
 def menu_add(request):
     ctx = {}
+    # if "partner" not in request.user.groups.all():
+    #     return redirect("/")
 
     if request.method == "GET":
         form = MenuForm()
@@ -112,6 +105,7 @@ def menu_add(request):
             ctx.update({ "form":form })
     return render(request, "menu_add.html", ctx)
 
+@login_required(login_url=URL_LOGIN)
 def menu_detail(request, menu_id):
     ctx = {}
     menu = Menu.objects.get(id=menu_id)
@@ -119,6 +113,7 @@ def menu_detail(request, menu_id):
 
     return render(request, "menu_detail.html", ctx)
 
+@login_required(login_url=URL_LOGIN)
 def menu_edit(request, menu_id):
     ctx = { "replacement" : "수정" }
     menu = Menu.objects.get(id=menu_id)
@@ -138,6 +133,7 @@ def menu_edit(request, menu_id):
             ctx.update({ "form":form })
     return render(request, "menu_add.html", ctx)
 
+@login_required(login_url=URL_LOGIN)
 def menu_delete(request, menu_id):
     menu = Menu.objects.get(id=menu_id)
     menu.delete()
