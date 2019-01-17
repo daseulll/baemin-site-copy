@@ -1,7 +1,12 @@
-from django.contrib.auth import authenticate
+from django.contrib.auth import (
+    authenticate,
+    login as auth_login,
+    logout as auth_logout,
+)
 from django.contrib.auth.models import User, Group
 from django.shortcuts import render, redirect
 from partner.models import Partner, Menu
+from .models import Client, Order
 # Create your views here.
 
 def index(request):
@@ -21,15 +26,20 @@ def common_login(request, ctx, group):
         user = authenticate(username=username, password=password)
 
         if user is not None:
-            if group not in user.groups.all():
+            if group not in [group.name for group in user.groups.all()]:
                 ctx.update({"error" : "접근 권한이 없습니다."})
+                for group in user.groups.all():
+                    print("group : ", group)
             else:
                 auth_login(request, user)
                 next_value = request.GET.get("next")
                 if next_value:
                     return redirect(next_value)
                 else:
-                    return redirect("/partner/")
+                    if group == "partner":
+                        return redirect("/partner/")
+                    else:
+                        return redirect("/")
         else:
             ctx.update({"error" : "사용자가 없습니다."})
 
@@ -51,8 +61,10 @@ def common_signup(request, ctx, group):
 
         user = User.objects.create_user(username, email, password)
         target_group = Group.objects.get(name=group)
-        user.add(target_group)
+        user.groups.add(target_group)
 
+        if group == "client":
+            Client.objects.create(user=user, name=username)
     return render(request, "signup.html", ctx)
 
 def signup(request):

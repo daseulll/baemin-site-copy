@@ -13,7 +13,7 @@ from .models import Menu
 
 URL_LOGIN = '/partner/login/'
 def partner_group_check(user):
-    return "partner" not in user.groups.all()
+    return "partner" in user.groups.all()
 
 # Create your views here.
 def index(request):
@@ -46,6 +46,7 @@ def logout(request):
     return redirect("/partner/")
 
 @login_required(login_url=URL_LOGIN)
+@user_passes_test(partner_group_check, login_url=URL_LOGIN)
 def edit_info(request):
     ctx = {}
     # partner = Partner.objects.get(user=request.user)
@@ -73,6 +74,7 @@ def edit_info(request):
     return redirect("/partner/")
 
 @login_required(login_url=URL_LOGIN)
+@user_passes_test(partner_group_check, login_url=URL_LOGIN)
 def menu(request):
     ctx = {}
     # 조건문보다는 login decorator로 구현하면 훨씬 간단하게 구현할 수 있다.
@@ -106,6 +108,7 @@ def menu_add(request):
     return render(request, "menu_add.html", ctx)
 
 @login_required(login_url=URL_LOGIN)
+@user_passes_test(partner_group_check, login_url=URL_LOGIN)
 def menu_detail(request, menu_id):
     ctx = {}
     menu = Menu.objects.get(id=menu_id)
@@ -114,6 +117,7 @@ def menu_detail(request, menu_id):
     return render(request, "menu_detail.html", ctx)
 
 @login_required(login_url=URL_LOGIN)
+@user_passes_test(partner_group_check, login_url=URL_LOGIN)
 def menu_edit(request, menu_id):
     ctx = { "replacement" : "수정" }
     menu = Menu.objects.get(id=menu_id)
@@ -134,6 +138,7 @@ def menu_edit(request, menu_id):
     return render(request, "menu_add.html", ctx)
 
 @login_required(login_url=URL_LOGIN)
+@user_passes_test(partner_group_check, login_url=URL_LOGIN)
 def menu_delete(request, menu_id):
     menu = Menu.objects.get(id=menu_id)
     menu.delete()

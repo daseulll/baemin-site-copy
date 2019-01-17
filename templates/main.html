@@ -8,8 +8,13 @@
         <div class="row">
           {% for partner in partner_list %}
             <div class="col-sm-4">
+              {% if user.is_authenticated %}
+              <a href="/{{ partner.id }}/">
               <h4>{{ partner.name }}</h4>
+              </a>
+              {% else %}
               <div>{{ partner.contact }}</div>
+              {% endif %}
               <div>{{ partner.address }}</div>
             </div>
           {% endfor %}
