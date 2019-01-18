@@ -4,27 +4,31 @@
 <br>
 <br>
 <br>
-<<h2>메뉴입니다.</h2>
 <div class="container">
   <div class="col-sm-6 col-sm-offset-3">
+    <h2>{{ partner.name }}의 메뉴</h2>
+    <form action="" method="post">
+      {% csrf_token %}
       <table class="table">
         <tr>
           <th>이미지</th>
           <th>메뉴이름</th>
           <th>가격</th>
+          <th>수량</th>
         </tr>
         {% for menu in menu_list %}
         <tr>
           <td><img style="max-width : 120px;" src="{{ menu.image.url }}"></td>
           <td><a href="/partner/menu/{{ menu.id }}/">{{ menu.name }}</a></td>
           <td>{{ menu.price }}</td>
+          <td><input type="number" value=0 name="{{ menu.id }}" /></td>
         </tr>
         {% endfor %}
-    </table>
-    <a href="/partner/menu/add/">
-      <button class="btn btn-default btn-block" name="button">메뉴 추가하기</button>
-    </a>
+      </table>
+      <a href="/order/">
+        <button class="btn btn-default btn-block" type="submit">주문하기</button>
+      </a>
+    </form>
   </div>
-
 </div>
 {% endblock %}

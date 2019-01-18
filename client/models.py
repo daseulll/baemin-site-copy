@@ -10,8 +10,17 @@ class Client(models.Model):
 class Order(models.Model):
     client = models.ForeignKey(Client, on_delete=models.CASCADE)
     address = models.CharField(
-        max_length=100, verbose_name="주소"
+        max_length=100, verbose_name="주소",
     )
     created_at = models.DateTimeField(auto_now_add=True)
 
-    items = models.ManyToManyField(Menu)
+    items = models.ManyToManyField(
+        Menu,
+        through='OrderItem',
+        through_fields=('order', 'menu'),
+    )
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
+    menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
+    count = models.PositiveSmallIntegerField()

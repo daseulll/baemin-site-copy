@@ -13,7 +13,8 @@ from .models import Menu
 
 URL_LOGIN = '/partner/login/'
 def partner_group_check(user):
-    return "partner" in user.groups.all()
+    return "partner" in [group.name for group in user.groups.all()]
+    # return "partner" in user.groups.all()
 
 # Create your views here.
 def index(request):
