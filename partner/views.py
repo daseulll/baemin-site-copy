@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.shortcuts import render, redirect
 
+from client.models import OrderItem
 from client.views import common_login, common_signup
 from .forms import PartnerForm, MenuForm
 from .models import Menu
@@ -80,7 +81,7 @@ def menu(request):
     ctx = {}
     # 조건문보다는 login decorator로 구현하면 훨씬 간단하게 구현할 수 있다.
     if request.user.is_anonymous or request.user.partner is None:
-        return redirect("/partner/")
+        return redirect("/")
 
     menu_list = Menu.objects.filter(partner = request.user.partner)
     ctx.update({ "menu_list": menu_list })
@@ -144,3 +145,21 @@ def menu_delete(request, menu_id):
     menu = Menu.objects.get(id=menu_id)
     menu.delete()
     return redirect("/partner/menu/")
+
+def order(request):
+    ctx = {}
+
+    menu_list = Menu.objects.filter(partner=request.user.partner)
+    item_list = []
+    for menu in menu_list:
+        item_list.extend([
+            item for item in OrderItem.objects.filter(menu=menu)
+        ])
+    order_set = set([item.order for item in item_list])
+    ctx.update({"order_set" : order_set})
+
+    return render(request, "order_list_for_partner.html", ctx)
+
+# def navbar_partner(request):
+#     ctx = {"is_partner":True}
+#     return common_navbar(request, ctx, "partner")

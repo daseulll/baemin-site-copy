@@ -26,6 +26,12 @@
       <a href="/partner/signup/">업체용 회원가입 하기</a>
     </div>
     {% endif %}
+    {% if is_partner %}
+    <div class="text-center">
+      <a href="/signup/">고객용 회원가입 하기</a>
+    </div>
+    {% endif %}
+    <h4>{{ complete }}</h4>
   </form>
 </div>
 {% endblock %}

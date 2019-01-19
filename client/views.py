@@ -3,16 +3,21 @@ from django.contrib.auth import (
     login as auth_login,
     logout as auth_logout,
 )
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User, Group
 from django.shortcuts import render, redirect
 from partner.models import Partner, Menu
 from .models import Client, Order, OrderItem
 # Create your views here.
 
+URL_LOGIN = '/login/'
+def client_group_check(user):
+    return "client" in [ group.name for group in user.groups.all()]
+
 def index(request):
     partner_list = Partner.objects.all()
     ctx = {
-        "partner_list" : partner_list
+        "partner_list" : partner_list,
     }
 
     return render(request, "main.html", ctx)
@@ -46,6 +51,7 @@ def common_login(request, ctx, group):
 
     return render(request, "login.html", ctx)
 
+
 def login(request):
     ctx = {"is_client":True}
     return common_login(request, ctx, "client")
@@ -65,12 +71,23 @@ def common_signup(request, ctx, group):
 
         if group == "client":
             Client.objects.create(user=user, name=username)
+        elif group == "partner":
+            partner = Partner.objects.create(
+                user=user,
+                name=username,
+            )
+            partner.is_active = False
+
+        ctx.update({"complete" : "회원가입이 완료되었습니다."})
     return render(request, "signup.html", ctx)
+
 
 def signup(request):
     ctx = {"is_client":True}
     return common_signup(request, ctx, "client")
 
+@login_required(login_url=URL_LOGIN)
+@user_passes_test(client_group_check, login_url=URL_LOGIN)
 def order(request, partner_id):
     ctx = {}
     partner = Partner.objects.get(id=partner_id)
@@ -96,6 +113,18 @@ def order(request, partner_id):
                 item = OrderItem.objects.create(
                     order=order, menu=menu, count=menu_count,
                 )
-                order.items.add(item)
+                # order.items.add(item)
             return redirect("/")
     return render(request, "order_menu_list.html", ctx)
+
+def order_list(request):
+    ctx = {}
+
+    return render(request, "order_list_for_client.html", ctx)
+
+# def navbar_client(request):
+#     ctx = {"is_client" : True}
+#     return common_navbar(request, ctx, "client")
+#
+# def common_navbar(reqeust, ctx, group):
+#     return render(request, "navbar.html", ctx)
