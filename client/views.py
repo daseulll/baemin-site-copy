@@ -12,15 +12,27 @@ from .models import Client, Order, OrderItem
 
 URL_LOGIN = '/login/'
 def client_group_check(user):
-    return "client" in [ group.name for group in user.groups.all()]
+    return "client" in [group.name for group in user.groups.all()]
 
 def index(request):
-    partner_list = Partner.objects.all()
+    category = request.GET.get("category")
+    if not category:
+        partner_list = Partner.objects.all()
+    elif category:
+        partner_list = Partner.objects.filter(category=category)
+
+    category_list = set([
+        (partner.category, partner.get_category_display())
+        for partner in partner_list
+    ])
+
     ctx = {
         "partner_list" : partner_list,
+        "category_list" : category_list,
     }
-
+    print(request.GET)
     return render(request, "main.html", ctx)
+
 
 def common_login(request, ctx, group):
     if request.method == "GET":
@@ -49,6 +61,7 @@ def common_login(request, ctx, group):
             ctx.update({"error" : "사용자가 없습니다."})
 
 
+
     return render(request, "login.html", ctx)
 
 
@@ -65,20 +78,23 @@ def common_signup(request, ctx, group):
         email = request.POST.get("email")
         password = request.POST.get("password")
 
-        user = User.objects.create_user(username, email, password)
-        target_group = Group.objects.get(name=group)
-        user.groups.add(target_group)
+        if User.objects.filter(username=username).exists():
+            ctx.update({"exist" : "사용중인 아이디입니다."})
+        else:
+            user = User.objects.create_user(username, email, password)
+            target_group = Group.objects.get(name=group)
+            user.groups.add(target_group)
 
-        if group == "client":
-            Client.objects.create(user=user, name=username)
-        elif group == "partner":
-            partner = Partner.objects.create(
-                user=user,
-                name=username,
-            )
-            partner.is_active = False
-
-        ctx.update({"complete" : "회원가입이 완료되었습니다."})
+            if group == "client":
+                Client.objects.create(user=user, name=username)
+            elif group == "partner":
+                # user.is_active = False
+                # user.save()
+                Partner.objects.create(
+                    user=user,
+                    name=username,
+                )
+            ctx.update({"complete" : "회원가입이 완료되었습니다."})
     return render(request, "signup.html", ctx)
 
 
@@ -122,9 +138,10 @@ def order_list(request):
 
     return render(request, "order_list_for_client.html", ctx)
 
-# def navbar_client(request):
-#     ctx = {"is_client" : True}
-#     return common_navbar(request, ctx, "client")
-#
-# def common_navbar(reqeust, ctx, group):
+# def navbar(request, ctx, group):
 #     return render(request, "navbar.html", ctx)
+
+# def navbar_client(request):
+#     ctx = {"is_client":True}
+#
+#     return navbar(request, ctx ,"client")

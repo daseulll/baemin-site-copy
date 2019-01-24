@@ -1,6 +1,10 @@
 from django.forms import TextInput, Textarea, ModelForm
 from .models import Partner, Menu
 
+# class User(forms.Form):
+#     class Meta:
+
+
 class PartnerForm(ModelForm):
     class Meta:
         model = Partner

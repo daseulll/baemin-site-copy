@@ -9,6 +9,6 @@ urlpatterns = [
     url(r'^signup/$', signup, name="signup"),
     url(r'^login/$', login, name="login"),
     url(r'^(?P<partner_id>\d+)/$', order, name="order"),
-    url(r'^(?P<partner_id>\d+)/order/$', order_list, name="order_list"),
+    url(r'^order/$', order_list, name="order_list"),
 
 ]

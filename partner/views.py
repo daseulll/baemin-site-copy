@@ -162,4 +162,4 @@ def order(request):
 
 # def navbar_partner(request):
 #     ctx = {"is_partner":True}
-#     return common_navbar(request, ctx, "partner")
+#     return navbar(request, ctx, "partner")

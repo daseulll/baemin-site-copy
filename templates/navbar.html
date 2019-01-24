@@ -1,3 +1,4 @@
+{% load client_extras %}
 <nav class="navbar navbar-default navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -15,16 +16,17 @@
           <ul class="nav navbar-nav">
             <li class="active"><a href="/partner/">홈</a></li>
               {% if user.is_authenticated %}
-              <li><a href="/partner/menu/">메뉴</a></li>
-              <li><a href="/partner/order/">주문</a></li>
-              <li><a href="/partner/contact/">문의</a></<li></li>
-              <li><a href="/partner/logout/">로그아웃</a></<li></li>
-              <!-- {% if is_client %}
+                {% if request.user|has_group:"partner" %}
+                <li><a href="/partner/menu/">메뉴</a></li>
+                <li><a href="/partner/order/">주문</a></li>
+                <li><a href="/partner/contact/">문의</a></<li></li>
+                <li><a href="/partner/logout/">로그아웃</a></<li></li>
+                {% else %}
                 <li><a href="/">메뉴</a></li>
                 <li><a href="/order/">주문내역</a></li>
                 <li><a href="/partner/contact/">문의</a></<li></li>
                 <li><a href="/partner/logout/">로그아웃</a></<li></li>
-                {% endif %} -->
+                {% endif %}
               {% else %}
               <li><a href="/login/">로그인</a></<li></li>
               <li><a href="/signup/">회원가입</a></<li></li>

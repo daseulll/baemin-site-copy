@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class Partner(models.Model):
-    KOREA = 'ko',
+    KOREA = 'ko'
     JAPAN = 'jp'
     CHINESE = 'cn'
     WESTERN = 'wst'
@@ -31,13 +31,20 @@ class Partner(models.Model):
     description = models.TextField(
         verbose_name="상세 소개"
     )
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(
+        default=False,
+        )
 
     category = models.CharField(
         max_length=20,
         choices= CATEGORIES,
         default= KOREA,
     )
+
+    # def approve(self):
+    #     self.is_active = True
+    #     self.save()
+
     def __str__(self):
         return self.name
 
