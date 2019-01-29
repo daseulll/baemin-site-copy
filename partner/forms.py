@@ -1,7 +1,7 @@
-from django.forms import TextInput, Textarea, ModelForm
+from django.forms import TextInput, Textarea, ModelForm, ChoiceField
 from imagekit.forms import ProcessedImageField
 from imagekit.processors import Thumbnail
-from .models import Partner, Menu
+from .models import Partner, Menu, CATEGORIES
 
 # class User(forms.Form):
 #     class Meta:
@@ -12,10 +12,12 @@ class PartnerForm(ModelForm):
         model = Partner
         fields = (
             "image_thumbnail",
+            "category",
             "name",
             "contact",
             "address",
             "description",
+            "category",
         )
         image_thumbnail = ProcessedImageField(
             spec_id="myapp:partner:image_thumbnail",
@@ -23,6 +25,7 @@ class PartnerForm(ModelForm):
             format='JPEG',
             options={'qulity': 60}
         )
+        category = ChoiceField(choices=CATEGORIES)
         widgets = {
             "name" : TextInput(attrs={"class":"form-control"}),
             "contact" : TextInput(attrs={"class":"form-control"}),

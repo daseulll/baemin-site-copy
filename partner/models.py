@@ -4,18 +4,18 @@ from imagekit.models import ProcessedImageField
 from imagekit.processors import Thumbnail
 
 # Create your models here.
-class Partner(models.Model):
-    KOREA = 'ko'
-    JAPAN = 'jp'
-    CHINESE = 'cn'
-    WESTERN = 'wst'
+KOREA = 'ko'
+JAPAN = 'jp'
+CHINESE = 'cn'
+WESTERN = 'wst'
 
-    CATEGORIES = (
-        ( KOREA, '한식'),
-        ( JAPAN, '일식'),
-        ( CHINESE, '중식'),
-        ( WESTERN, '양식'),
-    )
+CATEGORIES = (
+( KOREA, '한식'),
+( JAPAN, '일식'),
+( CHINESE, '중식'),
+( WESTERN, '양식'),
+)
+class Partner(models.Model):
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(
@@ -39,14 +39,16 @@ class Partner(models.Model):
 
     category = models.CharField(
         max_length=20,
-        choices= CATEGORIES,
-        default= KOREA,
+        choices = CATEGORIES,
+        default = KOREA,
+        verbose_name="카테고리",
     )
     image_thumbnail = ProcessedImageField(
         upload_to = 'partner/menu',
         processors = [Thumbnail(120, 120)],
         format = 'jPEG',
-        options = {'qulity' : 60},
+        options = {'qulity' : 80},
+        verbose_name = "대표이미지",
     )
     def __str__(self):
         return self.name

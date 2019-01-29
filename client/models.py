@@ -24,3 +24,6 @@ class OrderItem(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     menu = models.ForeignKey(Menu, on_delete=models.CASCADE)
     count = models.PositiveSmallIntegerField()
+
+    def __str__(self):
+        return self.menu.name

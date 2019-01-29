@@ -13,21 +13,20 @@
           <th>고객명(아이디)</th>
           <th>주소</th>
           <th>메뉴</th>
+          <th>수량</th>
           <th>가격</th>
         </tr>
-        {% for order in order_set %}
+        {% for order_set in order_set %}
         <tr>
           <!-- <td><img style="max-width : 120px;" src="{{ order.image.url }}"></td> -->
-          <td>{{ order.client.name }}</td>
-          <td>{{ order.address }}</td>
-          {% for items in order_set.all %}
-          <td>{{ items }}</td>
-          {% endfor %}
-          <td>{{ order.items.count }}</td>
+          <td>{{ order_set.order.client.name }}</td>
+          <td>{{ order_set.order.address }}</td>
+          <td>{{ order_set.menu.name }}</td>
+          <td>{{ order_set.count }}</td>
+          <td>{{ order_set.menu.price }}</td>
         </tr>
         {% endfor %}
     </table>
   </div>
-
 </div>
 {% endblock %}

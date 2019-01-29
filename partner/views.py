@@ -158,7 +158,11 @@ def order(request):
         item_list.extend([
             item for item in OrderItem.objects.filter(menu=menu)
         ])
-    order_set = set([item.order for item in item_list])
-    ctx.update({"order_set" : order_set})
+    order_set = set([item for item in item_list])
+
+    print(order_set)
+    ctx.update({
+        "order_set" : order_set,
+    })
 
     return render(request, "order_list_for_partner.html", ctx)

@@ -147,7 +147,17 @@ def order(request, partner_id):
 
 def order_list(request):
     ctx = {}
+    order_list = Order.objects.filter(client=request.user.client)
+    item_list=[]
+    for order in order_list:
+        item_list.extend([item for item in OrderItem.objects.filter(order=order)])
 
+        order_set = set([item for item in item_list])
+        ctx.update({
+            "order_set" : order_set,
+        })
+        # for order_set in order_set:
+        #     print(type(order_set.menu.price))
     return render(request, "order_list_for_client.html", ctx)
 
 # def navbar(request, ctx, group):

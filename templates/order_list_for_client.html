@@ -1,6 +1,7 @@
 {% extends "base.html" %}
 {% block body %}
 {% include "navbar.html" %}
+{% load client_extras %}
 <br>
 <br>
 <br>
@@ -13,18 +14,29 @@
           <th>고객명(아이디)</th>
           <th>주소</th>
           <th>메뉴</th>
+          <th>수량</th>
           <th>가격</th>
+          <th>주문시각</th>
         </tr>
-        {% for order in order_set %}
+        {% for order_set in order_set %}
         <tr>
-          <!-- <td><img style="max-width : 120px;" src="{{ order.image.url }}"></td> -->
-          <td>{{ order.client.name }}</td>
-          <td>{{ order.address }}</td>
-          <td>{{ order.items.name }}</td>
+          <td>{{ user.username }}</td>
+          <td>{{ order_set.order.address }}</td>
+          <td>{{ order_set.menu.name }}</td>
+          <td>{{ order_set.count }}</td>
+          <td>{{ order_set.menu.price }}*{{ order_set.count }}</td>
+          <td>{{ order_set.order.created_at }}</td>
         </tr>
         {% endfor %}
-    </table>
+        {% for order_set in order_set %}
+        <div class="col-sm-offset-4">
+          <tr>
+            <th>
+              총 결제금액 : {{ order_set.menu.price|total_price:order_set.count }}
+            </th>
+          </tr>
+        </div>
+        {% endfor %}
   </div>
-
 </div>
 {% endblock %}

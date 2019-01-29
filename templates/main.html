@@ -5,21 +5,23 @@
   <br><br><br>
   <div class="container">
     <div class="row">
-      <div class="col-sm-3 col-sm-offset-1 blog-sidebar">
+      <div class="col-sm-3 col-sm-offset-3 blog-sidebar">
+        {% if user.is_authenticated %}
         <h4>카테고리</h4>
-        <a href="/">ALL</a>
-        {% for alias, category in category_list %}
-        <a href="/?category={{ alias }}">{{ category }}</a>
-        {% endfor %}
+          <a href="/">ALL</a>
+          {% for alias, category in category_list %}
+          <a href="/?category={{ alias }}">{{ category }}</a>
+          {% endfor %}
+        {% endif %}
       </div>
       <div class="col-sm-6 col-sm-offset-3">
-        <br><br>
+<br><br>
 <br><br>
         <div class="row">
           {% for partner in partner_list %}
             <div class="col-sm-4">
               {% if user.is_authenticated %}
-                {% if partner.user.is_active %}
+                {% if partner.is_active %}
                   <img src="media/{{ partner.image_thumbnail }}" />
                   <a href="/{{ partner.id }}/">
                     <h4>{{ partner.name }}</h4>
@@ -33,6 +35,7 @@
         </div>
         {% if user.is_anonymous %}
         <h2>배달의 민족</h2>
+        <img src="media/baemin_main.jpg" width="500px">
         {% endif %}
       </div>
     </div>
