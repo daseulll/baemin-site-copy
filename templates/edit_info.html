@@ -8,7 +8,7 @@
     <h3>정보를 수정해주세요.</h3>
     <div class="row">
       <div class="col-sm-6 col-sm-offset-3">
-        <form class="" action="" method="post">
+        <form class="" action="" method="post" enctype="multipart/form-data">
           {% csrf_token %}
           {{ form.as_p }}
           <button class="btn btn-default">저장하기</button>

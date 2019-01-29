@@ -20,7 +20,10 @@
           <!-- <td><img style="max-width : 120px;" src="{{ order.image.url }}"></td> -->
           <td>{{ order.client.name }}</td>
           <td>{{ order.address }}</td>
-          <td>{{ item.menu }}</td>
+          {% for items in order_set.all %}
+          <td>{{ items }}</td>
+          {% endfor %}
+          <td>{{ order.items.count }}</td>
         </tr>
         {% endfor %}
     </table>

@@ -24,7 +24,7 @@ def index(request):
         partner_form = PartnerForm()
         ctx.update({"form" : partner_form})
     elif request.method == "POST":
-        partner_form = PartnerForm(request.POST)
+        partner_form = PartnerForm(request.POST, request.FILES)
         if partner_form.is_valid():
             partner = partner_form.save(commit=False)
             partner.user = request.user
@@ -32,7 +32,7 @@ def index(request):
             return redirect("/partner/")
         else:
             ctx.update({"form" : partner_form})
-
+    # print(request.user.partner)
     return render(request, "index.html", ctx)
 
 def login(request):
@@ -56,11 +56,14 @@ def edit_info(request):
     # ctx.update({"form" : partner_form})
 
     if request.method == "GET":
-        partner_form = PartnerForm(instance=request.user.partner)
+        partner_form = PartnerForm(
+            instance=request.user.partner
+        )
         ctx.update({"form" : partner_form})
     elif request.method == "POST":
         partner_form = PartnerForm(
             request.POST,
+            request.FILES,
             instance=request.user.partner
         )
         if partner_form.is_valid():
@@ -159,7 +162,3 @@ def order(request):
     ctx.update({"order_set" : order_set})
 
     return render(request, "order_list_for_partner.html", ctx)
-
-# def navbar_partner(request):
-#     ctx = {"is_partner":True}
-#     return navbar(request, ctx, "partner")

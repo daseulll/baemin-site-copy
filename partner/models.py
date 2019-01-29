@@ -1,5 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from imagekit.models import ProcessedImageField
+from imagekit.processors import Thumbnail
 
 # Create your models here.
 class Partner(models.Model):
@@ -40,11 +42,12 @@ class Partner(models.Model):
         choices= CATEGORIES,
         default= KOREA,
     )
-
-    # def approve(self):
-    #     self.is_active = True
-    #     self.save()
-
+    image_thumbnail = ProcessedImageField(
+        upload_to = 'partner/menu',
+        processors = [Thumbnail(120, 120)],
+        format = 'jPEG',
+        options = {'qulity' : 60},
+    )
     def __str__(self):
         return self.name
 

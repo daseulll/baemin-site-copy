@@ -14,14 +14,16 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
-            <li class="active"><a href="/partner/">홈</a></li>
               {% if user.is_authenticated %}
                 {% if request.user|has_group:"partner" %}
+                <li class="active"><a href="/partner/">홈</a></li>
                 <li><a href="/partner/menu/">메뉴</a></li>
                 <li><a href="/partner/order/">주문</a></li>
                 <li><a href="/partner/contact/">문의</a></<li></li>
                 <li><a href="/partner/logout/">로그아웃</a></<li></li>
-                {% else %}
+                {% endif %}
+                {% if request.user|has_group:"client" %}
+                <li class="active"><a href="/">홈</a></li>
                 <li><a href="/">메뉴</a></li>
                 <li><a href="/order/">주문내역</a></li>
                 <li><a href="/partner/contact/">문의</a></<li></li>

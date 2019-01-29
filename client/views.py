@@ -15,6 +15,7 @@ def client_group_check(user):
     return "client" in [group.name for group in user.groups.all()]
 
 def index(request):
+    ctx = {}
     category = request.GET.get("category")
     if not category:
         partner_list = Partner.objects.all()
@@ -26,11 +27,22 @@ def index(request):
         for partner in partner_list
     ])
 
+    # for index, item in enumerate(partner_list):
+    #     i = index
+    #     partner_img = [partner.name for partner in partner_list]
+    #     print (partner_img)
+        # print(type(index), item)
+
     ctx = {
         "partner_list" : partner_list,
         "category_list" : category_list,
     }
-    print(request.GET)
+
+    # print(request.GET)
+    partner = Partner.objects.all()[0]
+    print(type(partner))
+    print(partner)
+    print (partner.image_thumbnail.url)
     return render(request, "main.html", ctx)
 
 
