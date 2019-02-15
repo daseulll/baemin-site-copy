@@ -153,17 +153,20 @@ def order_list(request):
         item_list.extend([item for item in OrderItem.objects.filter(order=order)])
 
         order_set = set([item for item in item_list])
+
         ctx.update({
             "order_set" : order_set,
         })
-        # for order_set in order_set:
-        #     print(type(order_set.menu.price))
+
+        sum = 0
+        for order_set in order_set:
+            i = order_set.menu.price*order_set.count
+            sum = sum + i
+        ctx.update({
+            "sum" : sum,
+        })
+
     return render(request, "order_list_for_client.html", ctx)
 
-# def navbar(request, ctx, group):
-#     return render(request, "navbar.html", ctx)
-
-# def navbar_client(request):
-#     ctx = {"is_client":True}
-#
-#     return navbar(request, ctx ,"client")
+def contact(request):
+    return render(request, "contact.html", {})

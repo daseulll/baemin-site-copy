@@ -28,15 +28,13 @@
           <td>{{ order_set.order.created_at }}</td>
         </tr>
         {% endfor %}
-        {% for order_set in order_set %}
-        <div class="col-sm-offset-4">
-          <tr>
-            <th>
-              총 결제금액 : {{ order_set.menu.price|total_price:order_set.count }}
-            </th>
-          </tr>
-        </div>
-        {% endfor %}
+      <div class="col-sm-3 col-sm-offset-6">
+        <tr>
+          <td>
+            총결제금액 : {{ sum }}원
+          </td>
+        </tr>
+      </div>
   </div>
 </div>
 {% endblock %}
