@@ -1,10 +1,7 @@
 from django.forms import TextInput, Textarea, ModelForm, ChoiceField
-from imagekit.forms import ProcessedImageField
 from imagekit.processors import Thumbnail
+from imagekit.models import ProcessedImageField
 from .models import Partner, Menu, CATEGORIES
-
-# class User(forms.Form):
-#     class Meta:
 
 
 class PartnerForm(ModelForm):
@@ -21,7 +18,7 @@ class PartnerForm(ModelForm):
         )
         image_thumbnail = ProcessedImageField(
             spec_id="myapp:partner:image_thumbnail",
-            processors=[Thumbnail(120,120)],
+            processors=[Thumbnail(120, 120)],
             format='JPEG',
             options={'qulity': 60}
         )

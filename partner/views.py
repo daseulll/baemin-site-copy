@@ -45,7 +45,7 @@ def signup(request):
 
 def logout(request):
     auth_logout(request)
-    return redirect("/partner/")
+    return redirect("/")
 
 @login_required(login_url=URL_LOGIN)
 @user_passes_test(partner_group_check, login_url=URL_LOGIN)
