@@ -19,7 +19,7 @@
         {% for menu in menu_list %}
         <tr>
           <td><img style="max-width : 120px;" src="{{ menu.image.url }}"></td>
-          <td><a href="/partner/menu/{{ menu.id }}/">{{ menu.name }}</a></td>
+          <td>{{ menu.name }}</td>
           <td>{{ menu.price }}</td>
           <td><input type="number" value=0 name="{{ menu.id }}" /></td>
         </tr>

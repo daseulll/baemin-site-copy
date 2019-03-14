@@ -56,7 +56,7 @@ def common_login(request, ctx, group):
 
         if user is not None:
             if group not in [group.name for group in user.groups.all()]:
-                ctx.update({"error" : "접근 권한이 없습니다."})
+                ctx.update({"error" : "접근 권한이 없습니다. 업체용 계정입니다."})
                 for group in user.groups.all():
                     print("group : ", group)
             else:

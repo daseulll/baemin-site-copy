@@ -14,8 +14,14 @@
     <link rel="stylesheet" href='{% static "css/base.css" %}'>
 </head>
 <body>
-  {% block body %}{% endblock %}
+  <div class="container">
+    <div class="col-sm-12">
+      {% block body %}{% endblock %}
+      <hr />
+        &copy; 2019.daseulll
+        &copy; (주)배달의민족(Image)
+    </div>
+  </div>
    <script src='{% static "js/lib/bootstrap.min.js" %}'></script>
-
 </body>
 </html>

@@ -2,9 +2,6 @@
 {% block body %}
 {% include "navbar.html" %}
 {% load client_extras %}
-<br>
-<br>
-<br>
 <div class="container">
   <div class="col-sm-6 col-sm-offset-3">
     <h2>주문현황</h2>
@@ -28,13 +25,14 @@
           <td>{{ order_set.order.created_at }}</td>
         </tr>
         {% endfor %}
-      <div class="col-sm-3 col-sm-offset-6">
-        <tr>
-          <td>
-            총결제금액 : {{ sum }}원
-          </td>
-        </tr>
-      </div>
+        <div class="col-sm-3 col-sm-offset-6">
+          <tr>
+            <td>
+              총결제금액 : {{ sum }}원
+            </td>
+          </tr>
+        </div>
+      </table>
+    </div>
   </div>
-</div>
 {% endblock %}

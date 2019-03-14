@@ -13,11 +13,6 @@
       placeholder="Email address" required="">
     <input type="password" name="password" class="form-control"
       placeholder="Password" required="">
-    <!-- <div class="checkbox">
-      <label>
-        <input type="checkbox" value="remember-me"> Remember me
-      </label>
-    </div> -->
     <button class="btn btn-lg btn-primary btn-block" type="submit">
       가입하기
     </button>
@@ -31,9 +26,13 @@
       <a href="/signup/">고객용 회원가입 하기</a>
     </div>
     {% endif %}
+
+    <div class="text-center">
+        <a href="/login/">로그인</a>
+    </div>
     <h4>{{ complete }}</h4>
     <h4>{{ exist }}</h4>
-
+    
   </form>
 </div>
 {% endblock %}
